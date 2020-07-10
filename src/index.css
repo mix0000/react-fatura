@@ -1,0 +1,139 @@
+body {
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+}
+[hidden] {
+  display: none;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+#root{
+  min-width: 100%;
+  min-height: 100%;
+}
+.appInner {
+  min-height: 100%;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+.a4-overlay {
+  width: calc(100% - 240px);
+  height: calc(100% - 56px);
+  position: fixed;
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  justify-content: center;
+  -ms-align-items: center;
+  align-items: center;
+}
+
+.A4 {
+  background-color: #fff;
+  width: 21cm;
+  height: 29.7cm;
+  color: #212121;
+  font-size: 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.A4--withBgImg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.4;
+}
+.panzoom-inner:focus {
+  outline: none;
+}
+@media (min-width:0px) and (orientation: landscape){
+  .a4-overlay {
+    height: calc(100% - 48px);
+  }
+}
+@media (min-width:600px) {
+  .a4-overlay {
+    height: calc(100% - 64px);
+  }
+}
+@media (max-width: 599.95px) {
+  .a4-overlay {
+    width: 100%;
+  }
+}
+.a4-overlay--preview {
+  width: 100%;
+  height: 100%;
+}
+.panControll {
+  position: fixed;
+  bottom: 1rem;
+  right: 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+  ". moveTop ."
+  "moveLeft . moveRight"
+  ". moveDown .";
+}
+.panControll__moveTop {
+  grid-area: moveTop
+}
+.panControll__moveDown {
+  grid-area: moveDown
+}
+.panControll__moveLeft {
+  grid-area: moveLeft
+}
+.panControll__moveRight {
+  grid-area: moveRight
+}
+.panControll--zoom {
+  position: absolute;
+  top: 1rem;
+  right: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas: "zoomIn" "zoomOut";
+  gap: 1rem 0;
+}
+.panControll--reset {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+}
+.panControll__zoomIn {
+  grid-area: zoomIn;
+}
+.panControll__zoomOut {
+  grid-area: zoomOut;
+}
+.previewBtn {
+  display: none;
+}
+.previewBtn--absolute {
+  display: -webkit-flex;
+  display: -ms-flex;
+  display: flex;
+  position: absolute;
+  left: 24px;
+  top: 1rem;
+}
