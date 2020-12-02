@@ -1,12 +1,15 @@
-import { decorate, observable, action } from 'mobx'
+import { makeObservable, observable, action, makeAutoObservable } from 'mobx'
 import {CompanyName} from './components/Home/PageElements'
 import React from 'react'
 
+
+
+
 const getCurrentTheme = () => {
-  if ((localStorage) && (localStorage.getItem('theme'))) {
+  if (localStorage && localStorage.getItem('theme')) {
     return localStorage.getItem('theme')
   }
-  else if((window.matchMedia) && (window.matchMedia("(prefers-color-scheme: dark)").matches)){
+  else if(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches){
     return 'dark'
   }
   else {
@@ -15,7 +18,7 @@ const getCurrentTheme = () => {
 }
 
 const getBackgroundImage = () => {
-  if ((localStorage) && (localStorage.getItem('backgroundImage'))) {
+  if (localStorage && localStorage.getItem('backgroundImage')) {
     return JSON.parse(localStorage.getItem('backgroundImage'))
   }
   else {
@@ -25,6 +28,7 @@ const getBackgroundImage = () => {
 
 
 class Store {
+
   theme = getCurrentTheme()
   toggleTheme() {
     return this.theme = this.theme === 'light' ? 'dark' : 'light'
@@ -129,12 +133,14 @@ class Store {
     }
   }
   fonts = null
-  setFonts(arr) {
-    return this.fonts = arr
-  }
   loadedFonts = {}
   setLoadFonts(fontName) {
-    return (this.loadedFonts) && (this.loadedFonts[fontName] = true)
+    return this.loadedFonts && (this.loadedFonts[fontName] = true)
+  }
+
+
+  setFonts(arr) {
+    return this.fonts = arr
   }
   async getFonts() {
     const FONTS_API_KEY = 'AIzaSyBUf0k1awetCAd9ZVTO8AwK9k18wmT1f5o'
@@ -143,12 +149,15 @@ class Store {
         `https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=${FONTS_API_KEY}`)
       const data = await req.json()
       this.setFonts(data.items.slice(0, 15))
-      console.log(data.items.slice(0, 15))
     }
     catch (e) {
       console.log(e)
     }
   }
+
+
+
+  
   loadFont(fontName) {
     const importLink = `https://fonts.googleapis.com/css2?family=${fontName}:wght@400;700&display=swap`;
     const linkTag = `<link href="${importLink}" rel="stylesheet" />`
@@ -156,7 +165,7 @@ class Store {
     this.setLoadFonts(fontName)
   }
   getFontFromLocalStorage() {
-    if ((localStorage) && (localStorage.getItem('font'))) {
+    if (localStorage && localStorage.getItem('font')) {
       const font = JSON.parse(localStorage.getItem('font'))
       this.loadFont(font.fontName)
       return font
@@ -172,34 +181,37 @@ class Store {
   changePreview() {
     return this.preview = !this.preview
   }
+  constructor() {
+    makeObservable(this, {
+      container: observable,
+      checkBoxes: observable,
+      elems: observable,
+      theme: observable,
+      scale: observable,
+      currentAutoCenter: observable,
+      panZoomRef: observable,
+      toggleCheckBox: action,
+      toggleTheme: action,
+      setScale: action,
+      toogleElemsStatic: action,
+      toogleElemsVisibility: action,
+      changeElemLayout: action,
+      setContainerLayout: action,
+      setContainerImage: action,
+      setCurrentAutoCenter: action,
+      setPanZoomRef: action,
+      font: observable,
+      changeFont: action,
+      getFonts: action,
+      fonts: observable,
+      setFonts: action,
+      loadedFonts: observable,
+      setLoadFonts: action,
+      preview: observable,
+      changePreview: action,
+    })
+  }
 }
-Store = decorate(Store, {
-  container: observable,
-  checkBoxes: observable,
-  elems: observable,
-  theme: observable,
-  scale: observable,
-  currentAutoCenter: observable,
-  panZoomRef: observable,
-  toggleCheckBox: action,
-  toggleTheme: action,
-  setScale: action,
-  toogleElemsStatic: action,
-  toogleElemsVisibility: action,
-  changeElemLayout: action,
-  setContainerLayout: action,
-  setContainerImage: action,
-  setCurrentAutoCenter: action,
-  setPanZoomRef: action,
-  font: observable,
-  changeFont: action,
-  getFonts: action,
-  fonts: observable,
-  setFonts: action,
-  loadedFonts: observable,
-  setLoadFonts: action,
-  preview: observable,
-  changePreview: action,
-})
+
 
 export default new Store()
